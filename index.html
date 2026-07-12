@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>md.dev — сайти та Telegram-боти</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14171a;
+    --bg-elev: #1b1f22;
+    --ink: #e8e6e1;
+    --ink-dim: #9aa09c;
+    --line: rgba(232,230,225,0.12);
+    --accent: #7fa588;
+    --accent-strong: #9dc0a6;
+    --clay: #c98a68;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+  html[data-theme="light"]{
+    --bg: #ece8e1;
+    --bg-elev: #e2ddd3;
+    --ink: #1c1f1d;
+    --ink-dim: #5c6360;
+    --line: rgba(28,31,29,0.12);
+    --accent: #43654c;
+    --accent-strong: #2f4a37;
+    --clay: #a85f3c;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.6;
+    transition:background .4s ease, color .4s ease;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent); color:var(--bg);}
+  a{color:inherit; text-decoration:none;}
+  :focus-visible{outline:2px solid var(--accent-strong); outline-offset:3px;}
+
+  .wrap{max-width:920px; margin:0 auto; padding:0 24px;}
+
+  /* NAV */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; height:64px;}
+  .logo{font-family:var(--mono); font-weight:700; font-size:18px; letter-spacing:-0.02em;}
+  .logo .dim{color:var(--ink-dim);}
+  .navlinks{display:flex; align-items:center; gap:28px; font-size:14px; color:var(--ink-dim);}
+  .navlinks a:hover{color:var(--ink);}
+  .theme-toggle{
+    font-family:var(--mono); font-size:12px; border:1px solid var(--line);
+    background:transparent; color:var(--ink-dim); padding:6px 12px; border-radius:100px;
+    cursor:pointer; transition:.2s;
+  }
+  .theme-toggle:hover{border-color:var(--accent); color:var(--accent-strong);}
+
+  /* HERO */
+  .hero{padding:120px 0 100px;}
+  .eyebrow{
+    font-family:var(--mono); font-size:13px; color:var(--accent-strong);
+    display:flex; align-items:center; gap:10px; margin-bottom:28px;
+  }
+  .eyebrow::before{content:'●'; font-size:8px; color:var(--accent);}
+  .hero h1{
+    font-family:var(--mono); font-weight:800; letter-spacing:-0.03em;
+    font-size:clamp(34px, 6vw, 64px); line-height:1.08; margin-bottom:28px; max-width:14ch;
+  }
+  #typed-cursor{display:inline-block; width:0.5ch; background:var(--accent); animation:blink 1s step-end infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  .hero p.lede{font-size:19px; color:var(--ink-dim); max-width:52ch; margin-bottom:40px;}
+  .hero-cta{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--sans); font-weight:600; font-size:15px;
+    padding:14px 26px; border-radius:8px; display:inline-flex; align-items:center; gap:8px;
+    transition:.2s ease; border:1px solid transparent;
+  }
+  .btn-primary{background:var(--accent-strong); color:var(--bg);}
+  .btn-primary:hover{background:var(--accent);}
+  .btn-ghost{border-color:var(--line); color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--accent-strong);}
+
+  section{padding:80px 0; border-top:1px solid var(--line);}
+  .section-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:48px; gap:24px; flex-wrap:wrap;}
+  .section-head h2{font-family:var(--mono); font-size:14px; letter-spacing:0.08em; color:var(--ink-dim); text-transform:uppercase;}
+  .section-title{font-size:clamp(24px,3.4vw,34px); font-weight:700; letter-spacing:-0.02em; max-width:20ch;}
+
+  /* ABOUT */
+  .about-grid{display:grid; grid-template-columns:1fr 1fr; gap:48px;}
+  .about-grid p{color:var(--ink-dim); font-size:16px;}
+  .about-grid p + p{margin-top:16px;}
+  .stack-list{list-style:none; font-family:var(--mono); font-size:14px;}
+  .stack-list li{padding:10px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; color:var(--ink-dim);}
+  .stack-list li span:last-child{color:var(--ink);}
+
+  /* SERVICES */
+  .services{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden;}
+  .service-card{background:var(--bg-elev); padding:36px;}
+  .service-index{font-family:var(--mono); color:var(--accent); font-size:13px; margin-bottom:20px;}
+  .service-card h3{font-size:21px; font-weight:700; margin-bottom:12px;}
+  .service-card p{color:var(--ink-dim); font-size:15px; margin-bottom:20px;}
+  .service-meta{display:flex; gap:20px; font-family:var(--mono); font-size:12px; color:var(--ink-dim); border-top:1px solid var(--line); padding-top:16px;}
+  .service-meta b{color:var(--ink); font-weight:600;}
+
+  /* CASES */
+  .case{
+    border:1px solid var(--line); border-radius:14px; overflow:hidden; margin-bottom:28px;
+  }
+  .case-top{padding:32px 32px 0;}
+  .case-tag{
+    display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12px;
+    padding:5px 12px; border-radius:100px; margin-bottom:20px; border:1px solid var(--line);
+  }
+  .tag-real{color:var(--accent-strong); border-color:var(--accent);}
+  .tag-concept{color:var(--clay); border-color:var(--clay);}
+  .case h3{font-size:24px; font-weight:700; margin-bottom:10px;}
+  .case .case-sub{color:var(--ink-dim); font-size:15px; margin-bottom:24px; max-width:60ch;}
+  .case-visual{
+    height:220px; margin:0 32px; border-radius:10px 10px 0 0; position:relative; overflow:hidden;
+    display:flex; align-items:flex-end; padding:20px;
+    font-family:var(--mono); font-size:13px;
+  }
+  .visual-olimpeat{background:linear-gradient(160deg, #2b3a2f, #1a2420); color:#cfe0d2;}
+  .visual-cafe{background:linear-gradient(160deg, #3d2a1f, #241812); color:#f0d9c4;}
+  .case-bottom{padding:24px 32px 32px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;}
+  .case-links{display:flex; gap:10px; font-family:var(--mono); font-size:13px;}
+  .case-links a{border:1px solid var(--line); padding:8px 14px; border-radius:8px;}
+  .case-links a:hover{border-color:var(--accent-strong); color:var(--accent-strong);}
+  .quote{font-style:italic; color:var(--ink-dim); font-size:14px; max-width:40ch;}
+
+  /* CONTACT */
+  .contact-box{
+    background:var(--bg-elev); border:1px solid var(--line); border-radius:16px; padding:56px 40px;
+    text-align:center;
+  }
+  .contact-box h2{font-family:var(--mono); font-size:clamp(22px,3vw,32px); margin-bottom:16px; max-width:22ch; margin-inline:auto;}
+  .contact-box p{color:var(--ink-dim); margin-bottom:32px;}
+  .contact-links{display:flex; justify-content:center; gap:14px; flex-wrap:wrap;}
+
+  footer{padding:32px 0; text-align:center; font-family:var(--mono); font-size:12px; color:var(--ink-dim); border-top:1px solid var(--line);}
+
+  @media(max-width:720px){
+    .about-grid, .services{grid-template-columns:1fr;}
+    .hero{padding:80px 0 60px;}
+    .navlinks{display:none;}
+    .case-bottom{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">md<span class="dim">.dev</span></div>
+    <div class="navlinks">
+      <a href="#services">Послуги</a>
+      <a href="#cases">Кейси</a>
+      <a href="#contact">Контакти</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle">light</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">доступна для нових проєктів</div>
+    <h1 id="typed-heading">md.dev<span id="typed-cursor">&nbsp;</span></h1>
+    <p class="lede">Створюю сайти та Telegram-боти для бізнесу — від ідеї до запуску. Пишу код сама, розумію архітектуру, використовую AI як інструмент, а не як заміну голови.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="https://t.me/md.dev" target="_blank" rel="noopener">Написати в Telegram →</a>
+      <a class="btn btn-ghost" href="#cases">Дивитись кейси</a>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>про мене</h2>
+    </div>
+    <div class="about-grid">
+      <div>
+        <p>Навчаюсь на системного аналітика — тому дивлюсь на проєкт не тільки як розробник, а і як людина, яка розуміє бізнес-логіку і те, навіщо взагалі потрібен цей сайт чи бот.</p>
+        <p>Роблю сайти під ключ і Telegram-боти для каталогів, запису та заявок. Є досвід реального комерційного проєкту для компанії, що займається експортом продукції в Німеччину.</p>
+      </div>
+      <ul class="stack-list">
+        <li><span>сайти</span><span>лендинг, корпоративний, e-commerce</span></li>
+        <li><span>боти</span><span>каталог, запис, заявки, оплата</span></li>
+        <li><span>мови</span><span>UA, RU, EN (базовий)</span></li>
+        <li><span>терміни</span><span>від 5 днів (експрес)</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>послуги</h2>
+      <div class="section-title">Два формати роботи — під сайт і під бота</div>
+    </div>
+    <div class="services">
+      <div class="service-card">
+        <div class="service-index">services[0]</div>
+        <h3>Сайти</h3>
+        <p>Лендинг або корпоративний сайт під ваш бізнес: структура, дизайн, адаптація під мобільні, підключення форм і каталогу.</p>
+        <div class="service-meta"><span>термін: <b>5–10 днів</b></span><span>є експрес-опція</span></div>
+      </div>
+      <div class="service-card">
+        <div class="service-index">services[1]</div>
+        <h3>Telegram-боти</h3>
+        <p>Бот для каталогу товарів, запису на послуги або прийому заявок — з логікою під ваш конкретний процес, не шаблон.</p>
+        <div class="service-meta"><span>термін: <b>3–7 днів</b></span><span>інтеграція з CRM за запитом</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cases">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>кейси</h2>
+      <div class="section-title">Реальний проєкт і концепт, зроблений без обмежень клієнта</div>
+    </div>
+
+    <div class="case">
+      <div class="case-top">
+        <span class="case-tag tag-real">case[0] · реальний клієнт</span>
+        <h3>Olimpeat — export B2B</h3>
+        <p class="case-sub">Сайт для українського виробника заморожених напівфабрикатів преміум-класу, орієнтованого на експорт. Каталог продукції, три мовні версії (UA/EN/DE), інтеграція з телефонією та поштою.</p>
+      </div>
+      <div class="case-visual visual-olimpeat">olimpeat.com — UA / EN / DE — 100+ SKU каталог</div>
+      <div class="case-bottom">
+        <div class="case-links">
+          <a href="https://olimpeat.com" target="_blank" rel="noopener">olimpeat.com →</a>
+        </div>
+        <p class="quote">Задача: показати масштаб виробництва і викликати довіру у B2B-партнерів за кордоном.</p>
+      </div>
+    </div>
+
+    <div class="case">
+      <div class="case-top">
+        <span class="case-tag tag-concept">case[1] · власний концепт</span>
+        <h3>Смачно.Delivery — доставка їжі</h3>
+        <p class="case-sub">Навчальний проєкт, зроблений самостійно без брифу клієнта — щоб показати, як я працюю з дизайном, коли рішення повністю мої. Тепла, апетитна палітра замість строгого B2B-стилю Olimpeat.</p>
+      </div>
+      <div class="case-visual visual-cafe">Смачно.Delivery — меню, кошик, Telegram-бот замовлень</div>
+      <div class="case-bottom">
+        <div class="case-links">
+          <a href="#contact">запросити демо →</a>
+        </div>
+        <p class="quote">Показує інший бік: не строгий B2B, а емоційний споживчий продукт.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-box">
+      <h2>Є проєкт на прикметі?</h2>
+      <p>Пишіть у Telegram — відповідаю швидко, обговорюємо задачу і терміни.</p>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="https://t.me/md.dev" target="_blank" rel="noopener">@md.dev в Telegram</a>
+        <a class="btn btn-ghost" href="mailto:md.developer@gmail.com">md.developer@gmail.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>md.dev — сайти та telegram-боти · 2026</footer>
+
+<script>
+  // theme toggle (in-memory only)
+  const root = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  toggle.addEventListener('click', () => {
+    const isDark = root.getAttribute('data-theme') === 'dark';
+    root.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    toggle.textContent = isDark ? 'dark' : 'light';
+  });
+
+  // typed hero effect
+  const target = "md.dev";
+  const el = document.getElementById('typed-heading');
+  const cursor = document.getElementById('typed-cursor');
+  el.textContent = '';
+  el.appendChild(cursor);
+  let i = 0;
+  function type(){
+    if(i <= target.length){
+      el.textContent = target.slice(0, i);
+      el.appendChild(cursor);
+      i++;
+      setTimeout(type, 90);
+    }
+  }
+  type();
+
+  // respect reduced motion
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    el.textContent = target;
+    cursor.style.animation = 'none';
+  }
+</script>
+
+</body>
+</html>
