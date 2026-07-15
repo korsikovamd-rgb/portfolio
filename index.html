@@ -148,7 +148,7 @@
     padding:5px 12px; border-radius:100px; margin-bottom:20px; border:1px solid var(--line);
   }
   .tag-real{color:var(--accent-strong); border-color:var(--accent);}
-  .tag-concept{color:var(--clay); border-color:var(--clay);}
+  .tag-concept{color:var(--accent-strong); border-color:var(--accent);}
   .case h3{font-size:24px; font-weight:700; margin-bottom:10px;}
   .case .case-sub{color:var(--ink-dim); font-size:15px; margin-bottom:24px; max-width:60ch;}
   .case-visual{
@@ -161,7 +161,7 @@
     background-size:cover; background-position:center 20%;
     color:#f2f2ef;
   }
-  .visual-cafe{background:linear-gradient(160deg, #3d2a1f, #241812); color:#f0d9c4;}
+  .visual-cafe{background:var(--bg-elev); color:var(--ink-dim);}
   .case-bottom{padding:24px 32px 32px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;}
   .case-links{display:flex; gap:10px; font-family:var(--mono); font-size:13px;}
   .case-links a{border:1px solid var(--line); padding:8px 14px; border-radius:8px;}
@@ -286,7 +286,7 @@
       <div class="case-visual visual-cafe">Смачно.Delivery — меню, кошик, Telegram-бот замовлень</div>
       <div class="case-bottom">
         <div class="case-links">
-          <a href="#contact">запросити демо →</a>
+          <a href="https://smachno-delivery.vercel.app" target="_blank" rel="noopener">переглянути демо →</a>
         </div>
         <p class="quote">Показує інший бік: не строгий B2B, а емоційний споживчий продукт.</p>
       </div>
@@ -310,6 +310,18 @@
 <footer>md.dev — сайти та telegram-боти · 2026</footer>
 
 <script>
+  // scroll to in-page sections without adding #hash to the address bar
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const id = link.getAttribute('href').slice(1);
+      const target = document.getElementById(id);
+      if(target){
+        e.preventDefault();
+        target.scrollIntoView({behavior:'smooth'});
+      }
+    });
+  });
+
   const root = document.documentElement;
   const toggle = document.getElementById('themeToggle');
   toggle.addEventListener('click', () => {
